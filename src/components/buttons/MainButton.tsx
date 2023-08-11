@@ -1,17 +1,18 @@
-import { IconContext } from "react-icons";
 import { RiChatSmile2Fill } from "react-icons/ri";
+import Button from "../elements/Button";
+import { twMerge } from "tailwind-merge";
 
-interface Props {}
+interface Props {
+  className?: string;
+}
 
 type MainButtonProps = Props;
 
 const MainButton = (props: MainButtonProps) => {
   return (
-    <button className="p-4 bg-orange-900">
-      <IconContext.Provider value={{ className: "text-white text-5xl" }}>
-        <RiChatSmile2Fill />
-      </IconContext.Provider>
-    </button>
+    <Button className={twMerge("p-4 bg-orange-900 h-full", props.className)}>
+      <RiChatSmile2Fill className="text-white text-3xl" />
+    </Button>
   );
 };
 
