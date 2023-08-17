@@ -5,7 +5,9 @@ import Search from "../other/Search";
 import { AiOutlineMessage } from "react-icons/ai";
 import AccountWidget from "./AccountWidget";
 
-interface Props {}
+interface Props {
+  pageName: string;
+}
 
 type HeaderProps = Props;
 
@@ -15,7 +17,7 @@ const Header = (props: HeaderProps) => {
       <MainButton className="absolute left-0 top-0" />
       <Container>
         <div className="flex justify-between items-center h-full">
-          <h3 className="text-white font-bold">Page name</h3>
+          <h3 className="text-white font-bold">{props.pageName}</h3>
           <Search />
           <div className="flex justify-between h-full w-28">
             <Button>
@@ -28,14 +30,7 @@ const Header = (props: HeaderProps) => {
               <AiOutlineMessage className="text-gray-400 text-2xl" />
             </Button>
           </div>
-          <AccountWidget
-            user={{
-              name: "Good Dude",
-              avatar:
-                "https://i.pinimg.com/originals/1c/29/9c/1c299c93367f9476b857f73529db61c9.jpg",
-              login: "SomeLogin",
-            }}
-          />
+          <AccountWidget />
         </div>
       </Container>
     </header>

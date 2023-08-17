@@ -1,5 +1,9 @@
+import { UserStatuses } from "../enums/UserStatuses";
+
 export default interface User {
+  id: number;
   name: string;
   login: string;
-  avatar: string;
+  avatarReference: string;
+  status: UserStatuses;
 }

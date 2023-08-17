@@ -1,29 +1,28 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { AccessToken } from "../interfaces/AccessToken";
 import User from "../interfaces/User";
 
-export const fetchUserByJwt = createAsyncThunk(
-  "user/fetchUserByJwt",
-  async (thunkAPI) => {
-    return (await axios.get(process.env.MAIN_API || "")).data;
-  }
-);
-
-interface UserSliceInitialState {
+export interface UserSliceInitialState {
+  token: AccessToken;
   user: User;
 }
 
-const userSlice = createSlice<UserSliceInitialState, {}>({
+const userSlice = createSlice({
   initialState: {} as UserSliceInitialState,
   name: "user",
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchUserByJwt.fulfilled, (state, action) => {
+  reducers: {
+    setToken: (
+      state: UserSliceInitialState,
+      action: PayloadAction<AccessToken>
+    ) => {
+      state.token = action.payload;
+    },
+    setUser: (state: UserSliceInitialState, action: PayloadAction<User>) => {
       state.user = action.payload;
-    });
+    },
   },
 });
 
-const userReducer = userSlice.reducer;
-
-export default userReducer;
+export const userReducer = userSlice.reducer;
+export const { setToken, setUser } = userSlice.actions;
+export const userActions = userSlice.actions;

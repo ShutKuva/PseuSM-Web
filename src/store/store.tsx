@@ -1,8 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { userReducer } from "./userSlice";
 
-export const store = configureStore({
-  reducer: [],
+const mergedReducers = combineReducers({
+  user: userReducer,
+});
+
+const store = configureStore({
+  reducer: mergedReducers,
 });
 
 export type StoreState = ReturnType<typeof store.getState>;
 export type StoreDispatcher = typeof store.dispatch;
+
+export { store };
