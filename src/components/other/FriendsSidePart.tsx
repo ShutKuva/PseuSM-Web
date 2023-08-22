@@ -10,44 +10,41 @@ import {
 import User from "../../interfaces/User";
 import SidePartItem from "./SidePartItem";
 import Avatar from "./Avatar";
-import { useSelector } from "react-redux";
-import { StoreState } from "../../store/store";
-import { UserSliceInitialState } from "../../store/userSlice";
 import { FriendsFilters } from "../../enums/FriendsFilters";
 
-interface Props {}
-
-type FriendsSidePartProps = Props;
+interface FriendsSidePartProps {}
 
 const FriendsSidePart = (props: FriendsSidePartProps) => {
   const [connection, setConnection] = useState<HubConnection>();
   const [users, setUsers] = useState<{ [id: number]: User }>({});
-  const { user } = useSelector<StoreState, UserSliceInitialState>(
-    (state) => state.user
-  );
+
+  const setMappedUsers: (users: User[]) => void = (users) => {
+    const userDict: { [id: number]: User } = {};
+    users.forEach((v) => {
+      userDict[v.id] = v;
+    });
+    setUsers(userDict);
+  };
 
   useEffect(() => {
-    const friendConnection = createFriendConnection();
-
-    if (friendConnection) {
-      friendConnection.on(GET_FRIENDS_CLIENT, (users: User[]) => {
-        const userDict: { [id: number]: User } = {};
-        users.forEach((v) => {
-          userDict[v.id] = v;
-        });
-        setUsers(users);
-      });
-
-      friendConnection.on(UPDATE_USER_CLIENT, (user: User) => {
+    const friendConnection = createFriendConnection({
+      onGetFriendsClient: (users) => {
+        setMappedUsers(users);
+      },
+      onUpdateUserClient(user) {
         setUsers((state) => {
           state[user.id] = user;
           return state;
         });
+      },
+    });
+
+    if (friendConnection) {
+      friendConnection.start().then(() => {
+        if (friendConnection.state === HubConnectionState.Connected) {
+          setConnection(friendConnection);
+        }
       });
-
-      friendConnection.start();
-
-      setConnection(friendConnection);
     }
 
     return () => {
@@ -55,8 +52,15 @@ const FriendsSidePart = (props: FriendsSidePartProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (connection && connection.state === HubConnectionState.Connected) {
+      console.log(connection);
+      getFriends(FriendsFilters.All, connection);
+    }
+  }, [connection]);
+
   const usersArray: User[] = [];
-  for (let id in usersArray) {
+  for (let id in users) {
     usersArray.push(users[id]);
   }
 

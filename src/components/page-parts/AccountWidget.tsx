@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import Avatar from "../other/Avatar";
-import { BiSolidUpArrow } from "react-icons/bi";
+import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
 import Button from "../elements/Button";
 import { useMutation } from "react-query";
 import { getUser } from "../../services/UserService";
@@ -8,16 +8,18 @@ import NavButton from "../elements/NavButton";
 import { useSelector } from "react-redux";
 import { StoreState } from "../../store/store";
 import { UserSliceInitialState } from "../../store/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUserActions } from "../../hooks/DispatcherWithActions";
+import DropDownAvatarMenu from "../other/DropDownAvatarMenu";
+import DropDownAvatarMenuItem from "../other/DropDownAvatarMenuItem";
 
-interface Props {
+interface AccountWidgetProps {
   className?: string;
 }
 
-type AccountWidgetProps = Props;
-
 const AccountWidget = (props: AccountWidgetProps) => {
+  const { className } = props;
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const { setUser } = useUserActions();
   const { data, mutate } = useMutation({
     mutationFn: getUser,
@@ -28,46 +30,65 @@ const AccountWidget = (props: AccountWidgetProps) => {
       }
     },
   });
-
   const { token } = useSelector<StoreState, UserSliceInitialState>(
     (state) => state.user
   );
+
+  const menuShowHandler = () => {
+    setIsMenuCollapsed((state) => !state);
+  };
 
   useEffect(() => {
     console.log("ObjectMutated");
     mutate(undefined);
   }, [token, mutate]);
 
-  return (
-    <div
-      className={twMerge(
-        `flex items-center justify-between text-white h-12 w-52`,
-        props.className
-      )}
-    >
-      {data ? (
-        <>
-          <Avatar user={data} />
-          <div>
-            <h4 className="font-bold p-0 m-0">{data.name}</h4>
-            <h5 className="font-thin p-0 m-0 text-sm text-gray-300">
-              {data.login}
-            </h5>
-          </div>
-          <Button hidden>
-            <BiSolidUpArrow className="text-gray-300 text-sm" />
-          </Button>
-        </>
-      ) : (
-        <div>
-          <NavButton link="/login" className="mr-4">
-            Login
+  if (data) {
+    const { id, login, name } = data;
+
+    return (
+      <div className="h-full">
+        <div
+          className={twMerge("flex items-center text-white h-full", className)}
+        >
+          <NavButton link={`/user/${id}`} className="flex items-center">
+            <Avatar user={data} className="mr-5" />
+            <div className="mr-5 text-left">
+              <h4 className="font-bold p-0 m-0">{name}</h4>
+              <h5 className="font-thin p-0 m-0 text-sm text-gray-300">
+                {login}
+              </h5>
+            </div>
           </NavButton>
-          <NavButton link="register">Register</NavButton>
+          <Button onClick={menuShowHandler}>
+            {isMenuCollapsed ? (
+              <BiSolidDownArrow className="text-gray-300 text-sm" />
+            ) : (
+              <BiSolidUpArrow className="text-gray-300 text-sm" />
+            )}
+          </Button>
         </div>
-      )}
-    </div>
-  );
+
+        <DropDownAvatarMenu
+          hidden={!isMenuCollapsed}
+          className="relative z-50 drop-shadow-xl"
+        >
+          <DropDownAvatarMenuItem text="Test" />
+          <DropDownAvatarMenuItem text="Test" />
+          <DropDownAvatarMenuItem text="Test" />
+        </DropDownAvatarMenu>
+      </div>
+    );
+  } else {
+    return (
+      <div className="text-white">
+        <NavButton link="/login" className="mr-4">
+          Login
+        </NavButton>
+        <NavButton link="register">Register</NavButton>
+      </div>
+    );
+  }
 };
 
 export default AccountWidget;

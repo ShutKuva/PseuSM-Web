@@ -6,6 +6,8 @@ export const getPageName = (currentPath: string) => {
       return "Login page";
     case "register":
       return "Register page";
+    case "user":
+      return "User page";
     default:
       return "Main page";
   }

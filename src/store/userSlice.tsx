@@ -3,8 +3,8 @@ import { AccessToken } from "../interfaces/AccessToken";
 import User from "../interfaces/User";
 
 export interface UserSliceInitialState {
-  token: AccessToken;
-  user: User;
+  token?: AccessToken;
+  user?: User;
 }
 
 const userSlice = createSlice({

@@ -10,18 +10,39 @@ const UPDATE_SUBSCRIPTION_TO_FRIEND_GROUP = "UpdateSubscriptionToFriendsGroup";
 export const GET_FRIENDS_CLIENT = "getFriends";
 export const UPDATE_USER_CLIENT = "updateUser";
 
-export const createFriendConnection = () => {
-  return createConnection("/friends");
+interface CreateFriendConnectionParameters {
+  onGetFriendsClient?: (users: User[]) => void;
+  onUpdateUserClient?: (user: User) => void;
+}
+
+export const createFriendConnection = (
+  parameters: CreateFriendConnectionParameters
+) => {
+  const { onGetFriendsClient, onUpdateUserClient } = parameters;
+
+  const friendConnection = createConnection("/friends");
+
+  if (!friendConnection) {
+    return undefined;
+  }
+
+  if (onGetFriendsClient) {
+    friendConnection.on(GET_FRIENDS_CLIENT, onGetFriendsClient);
+  }
+
+  if (onUpdateUserClient) {
+    friendConnection.on(UPDATE_USER_CLIENT, onUpdateUserClient!);
+  }
+
+  return friendConnection;
 };
 
 export const getFriends = (
-  id: number,
   friendsFilter: FriendsFilters,
   connection: HubConnection
 ) => {
   try {
-    console.log("Get friends");
-    return connection.invoke<User[]>(GET_FRIENDS, id, friendsFilter);
+    return connection.invoke<User[]>(GET_FRIENDS, friendsFilter);
   } catch (error) {
     console.log(error);
   }

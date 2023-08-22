@@ -8,9 +8,7 @@ import { useUserActions } from "../hooks/DispatcherWithActions";
 import { getToken } from "../services/TokenService";
 import { useEffect } from "react";
 
-interface Props {}
-
-type RegisterProps = Props;
+interface RegisterProps {}
 
 const Register = (props: RegisterProps) => {
   const { handleSubmit, register, control } = useForm<RegisterUser>();
@@ -37,9 +35,9 @@ const Register = (props: RegisterProps) => {
 
   return (
     <form className="flex flex-col w-3/6 mx-auto mt-10">
-      <input type="text" {...register("name")} />
-      <input type="text" {...register("login")} />
-      <input type="password" {...register("password")} />
+      <input type="text" {...register("name")} placeholder="Name" />
+      <input type="text" {...register("login")} placeholder="Login" />
+      <input type="password" {...register("password")} placeholder="Password" />
       <Controller
         name="avatar"
         control={control}
@@ -51,6 +49,7 @@ const Register = (props: RegisterProps) => {
             onBlur={onBlur}
             name={name}
             type="file"
+            placeholder="Avatar"
           />
         )}
       />

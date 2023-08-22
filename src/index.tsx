@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Main from "./pages/Main";
+import UserPage from "./pages/UserPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "user/:userId?",
+        element: <UserPage />,
       },
     ],
   },

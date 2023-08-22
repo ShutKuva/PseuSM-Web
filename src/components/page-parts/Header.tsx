@@ -5,11 +5,9 @@ import Search from "../other/Search";
 import { AiOutlineMessage } from "react-icons/ai";
 import AccountWidget from "./AccountWidget";
 
-interface Props {
+interface HeaderProps {
   pageName: string;
 }
-
-type HeaderProps = Props;
 
 const Header = (props: HeaderProps) => {
   return (

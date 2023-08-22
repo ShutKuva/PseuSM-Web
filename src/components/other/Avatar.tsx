@@ -1,20 +1,28 @@
+import { twMerge } from "tailwind-merge";
 import User from "../../interfaces/User";
 
-interface Props {
+interface AvatarProps {
   user: User;
+  className?: string;
 }
 
-type AvatarProps = Props;
-
 const Avatar = (props: AvatarProps) => {
+  const {
+    user: { avatarReference },
+    className,
+  } = props;
+
   return (
-    <div className="relative h-14 w-14 flex">
+    <div className={twMerge("relative h-9 w-9 flex", className)}>
       <img
-        src={props.user.avatarReference}
+        src={avatarReference}
         alt="avatar"
-        className="h-12 w-12 rounded-full mx-auto my-auto"
+        className="h-9 w-9 rounded-full mx-auto my-auto"
       />
-      <h6 className="bg-green-600 py-1 px-2 rounded-xl absolute top-0 left-0 text-white text-xs">
+      <h6
+        hidden
+        className="bg-green-600 py-1 px-2 rounded-xl absolute top-0 left-0 text-white text-xs"
+      >
         7
       </h6>
     </div>

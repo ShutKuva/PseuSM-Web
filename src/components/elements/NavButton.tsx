@@ -1,17 +1,20 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import { Link } from "react-router-dom";
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface NavButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
   link: string;
+  className?: string;
 }
 
-type NavButtonProps = Props;
-
 const NavButton = (props: NavButtonProps) => {
+  const { children, className, link } = props;
+
   return (
-    <Link className={props.className} to={props.link}>
-      <button type="button">{props.children}</button>
+    <Link to={link}>
+      <button type="button" className={className}>
+        {children}
+      </button>
     </Link>
   );
 };
