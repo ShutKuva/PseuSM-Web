@@ -8,9 +8,7 @@ import { getToken } from "../services/TokenService";
 import { useUserActions } from "../hooks/DispatcherWithActions";
 import { useEffect } from "react";
 
-interface Props {}
-
-type LoginProps = Props;
+interface LoginProps {}
 
 const Login = (props: LoginProps) => {
   const { register, handleSubmit } = useForm<LoginUser>();
@@ -37,8 +35,8 @@ const Login = (props: LoginProps) => {
 
   return (
     <form className="flex flex-col w-3/6 mx-auto mt-10">
-      <input {...register("login")} />
-      <input {...register("password")} type="password" />
+      <input {...register("login")} placeholder="Login" />
+      <input {...register("password")} type="password" placeholder="Password" />
       <Button
         type="button"
         className="bg-orange-900 px-8 py-2 rounded-lg"

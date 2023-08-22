@@ -6,4 +6,8 @@
   form input {
     @apply mb-2 block border-2 p-2 px-4 border-gray-300 rounded-lg focus:border-gray-400 focus:outline-none;
   }
+
+  .user-page-action-button {
+    @apply p-2 rounded-full text-2xl text-white mr-5 last:mr-0;
+  }
 }

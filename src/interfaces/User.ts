@@ -6,4 +6,5 @@ export default interface User {
   login: string;
   avatarReference: string;
   status: UserStatuses;
+  description: string;
 }

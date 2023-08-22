@@ -1,10 +1,8 @@
 import { ReactNode } from "react";
 
-interface Props {
+interface ContainerProps {
   children?: ReactNode;
 }
-
-type ContainerProps = Props;
 
 const Container = (props: ContainerProps) => {
   return <div className="w-10/12 mx-auto h-full">{props.children}</div>;

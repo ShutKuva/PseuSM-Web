@@ -2,11 +2,9 @@ import { RiChatSmile2Fill } from "react-icons/ri";
 import { twMerge } from "tailwind-merge";
 import NavButton from "../elements/NavButton";
 
-interface Props {
+interface MainButtonProps {
   className?: string;
 }
-
-type MainButtonProps = Props;
 
 const MainButton = (props: MainButtonProps) => {
   return (

@@ -1,10 +1,8 @@
 import { ReactNode } from "react";
 
-interface Props {
+interface SidePartItemProps {
   children: ReactNode;
 }
-
-type SidePartItemProps = Props;
 
 const SidePartItem = (props: SidePartItemProps) => {
   return (
